@@ -1,0 +1,174 @@
+{
+  "timestamp": "2026-03-01T20:11:48.592Z",
+  "totalImages": 20,
+  "successfulProcessing": 20,
+  "failedProcessing": 0,
+  "imagesWithDetections": 20,
+  "totalObjectsDetected": 24739,
+  "avgInferenceTimeMs": 593.25,
+  "avgDetectionsPerImage": 1236.95,
+  "results": [
+    {
+      "image": "waterleak1.jpeg",
+      "status": "success",
+      "time": 1497,
+      "detectionCount": 1111,
+      "detectionInfo": [],
+      "outputPath": "waterleak1_detected.png"
+    },
+    {
+      "image": "waterleak10.jpeg",
+      "status": "success",
+      "time": 475,
+      "detectionCount": 1054,
+      "detectionInfo": [],
+      "outputPath": "waterleak10_detected.png"
+    },
+    {
+      "image": "waterleak11.jpeg",
+      "status": "success",
+      "time": 597,
+      "detectionCount": 1304,
+      "detectionInfo": [],
+      "outputPath": "waterleak11_detected.png"
+    },
+    {
+      "image": "waterleak12.jpeg",
+      "status": "success",
+      "time": 486,
+      "detectionCount": 1125,
+      "detectionInfo": [],
+      "outputPath": "waterleak12_detected.png"
+    },
+    {
+      "image": "waterleak13.jpeg",
+      "status": "success",
+      "time": 459,
+      "detectionCount": 984,
+      "detectionInfo": [],
+      "outputPath": "waterleak13_detected.png"
+    },
+    {
+      "image": "waterleak14.jpeg",
+      "status": "success",
+      "time": 671,
+      "detectionCount": 1669,
+      "detectionInfo": [
+        "   383. Class 78 - Confidence: 25.0%"
+      ],
+      "outputPath": "waterleak14_detected.png"
+    },
+    {
+      "image": "waterleak15.jpeg",
+      "status": "success",
+      "time": 564,
+      "detectionCount": 1235,
+      "detectionInfo": [],
+      "outputPath": "waterleak15_detected.png"
+    },
+    {
+      "image": "waterleak16.jpeg",
+      "status": "success",
+      "time": 523,
+      "detectionCount": 1244,
+      "detectionInfo": [],
+      "outputPath": "waterleak16_detected.png"
+    },
+    {
+      "image": "waterleak17.jpeg",
+      "status": "success",
+      "time": 534,
+      "detectionCount": 1160,
+      "detectionInfo": [],
+      "outputPath": "waterleak17_detected.png"
+    },
+    {
+      "image": "waterleak18.jpeg",
+      "status": "success",
+      "time": 462,
+      "detectionCount": 1017,
+      "detectionInfo": [],
+      "outputPath": "waterleak18_detected.png"
+    },
+    {
+      "image": "waterleak19.jpeg",
+      "status": "success",
+      "time": 591,
+      "detectionCount": 1342,
+      "detectionInfo": [],
+      "outputPath": "waterleak19_detected.png"
+    },
+    {
+      "image": "waterleak2.jpeg",
+      "status": "success",
+      "time": 498,
+      "detectionCount": 1111,
+      "detectionInfo": [],
+      "outputPath": "waterleak2_detected.png"
+    },
+    {
+      "image": "waterleak20.jpeg",
+      "status": "success",
+      "time": 682,
+      "detectionCount": 1645,
+      "detectionInfo": [],
+      "outputPath": "waterleak20_detected.png"
+    },
+    {
+      "image": "waterleak3.jpeg",
+      "status": "success",
+      "time": 649,
+      "detectionCount": 1461,
+      "detectionInfo": [],
+      "outputPath": "waterleak3_detected.png"
+    },
+    {
+      "image": "waterleak4.jpeg",
+      "status": "success",
+      "time": 513,
+      "detectionCount": 1160,
+      "detectionInfo": [],
+      "outputPath": "waterleak4_detected.png"
+    },
+    {
+      "image": "waterleak5.jpeg",
+      "status": "success",
+      "time": 424,
+      "detectionCount": 1036,
+      "detectionInfo": [],
+      "outputPath": "waterleak5_detected.png"
+    },
+    {
+      "image": "waterleak6.jpeg",
+      "status": "success",
+      "time": 612,
+      "detectionCount": 1388,
+      "detectionInfo": [],
+      "outputPath": "waterleak6_detected.png"
+    },
+    {
+      "image": "waterleak7.jpeg",
+      "status": "success",
+      "time": 659,
+      "detectionCount": 1553,
+      "detectionInfo": [],
+      "outputPath": "waterleak7_detected.png"
+    },
+    {
+      "image": "waterleak8.jpeg",
+      "status": "success",
+      "time": 462,
+      "detectionCount": 1010,
+      "detectionInfo": [],
+      "outputPath": "waterleak8_detected.png"
+    },
+    {
+      "image": "waterleak9.jpeg",
+      "status": "success",
+      "time": 507,
+      "detectionCount": 1130,
+      "detectionInfo": [],
+      "outputPath": "waterleak9_detected.png"
+    }
+  ]
+}
