@@ -1,0 +1,10 @@
+names:
+  0: water_stain
+  1: wet_surface
+  2: mold_growth
+  3: structural_damage
+  4: active_leak
+nc: 5
+path: C:\Users\jerin\code\smart-water-leak-detector\backend\data\water_damage
+train: C:\Users\jerin\code\smart-water-leak-detector\backend\data\water_damage\images\train
+val: C:\Users\jerin\code\smart-water-leak-detector\backend\data\water_damage\images\val
