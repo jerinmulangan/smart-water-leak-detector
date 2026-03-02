@@ -8,7 +8,8 @@
     "start": "node index.js",
     "dev": "nodemon index.js",
     "test:yolov8": "node test_yolov8.js",
-    "test:archive": "node test_archive_detection.js"
+    "test:archive": "node test_archive_detection.js",
+    "train:water-damage": "python train_water_damage_model.py"
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
