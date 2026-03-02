@@ -7,9 +7,23 @@ const http = require("http");
 const { URL } = require("url");
 
 // YOLOv8 Nano model configuration for water leak detection
-const MODEL_PATH = path.join(__dirname, "../models/yolov8n.onnx");
+// Auto-detect: use custom trained model if available, otherwise fall back to generic
+function getModelPath() {
+  const customModelPath = path.join(__dirname, "../models/yolov8n_water_damage.onnx");
+  const genericModelPath = path.join(__dirname, "../models/yolov8n.onnx");
+  
+  if (fs.existsSync(customModelPath)) {
+    console.log("✅ Using custom trained water damage model");
+    return customModelPath;
+  } else {
+    console.log("ℹ️  Using generic YOLOv8n (no custom model found)");
+    return genericModelPath;
+  }
+}
+
+const MODEL_PATH = getModelPath();
 const INPUT_SIZE = 640; // YOLOv8 standard input size
-const CONFIDENCE_THRESHOLD = 0.6; // 60% confidence - filter noise from untrained model
+const CONFIDENCE_THRESHOLD = 0.5; // Model outputs ~1.0 confidence (see debug_model_output.js)
 const IOU_THRESHOLD = 0.45; // Non-max suppression IOU threshold
 
 // Custom water damage labels (train on water damage dataset)
@@ -197,18 +211,19 @@ function decodeOutput(outputs, originalSize) {
 
     console.log(`📊 Output shape: [${dims.join(", ")}]`);
 
-    // YOLOv8 ONNX format: [1, 84, 8400] - transposed
-    // Channels: [x, y, w, h, objectness, class0-79]
+    // YOLOv8 ONNX format: [1, numChannels, 8400] - transposed
+    // Channels: [x, y, w, h, objectness, class0, class1, ...]
     const numChannels = dims[1];
     const numDetections = dims[2];
+    const numClasses = numChannels - 5;  // Total channels minus 4 bbox + 1 objectness
 
-    console.log(`✅ Processing ${numDetections} detections with ${numChannels} channels`);
+    console.log(`✅ Processing ${numDetections} detections with ${numChannels} channels (${numClasses} classes)`);
 
     let detectionCount = 0;
 
     // Process each detection
     for (let i = 0; i < numDetections; i++) {
-      // Extract values from transposed format [1, 84, 8400]
+      // Extract values from transposed format [1, numChannels, 8400]
       const xCenter = data[0 * numDetections + i];
       const yCenter = data[1 * numDetections + i];
       const width = data[2 * numDetections + i];
@@ -218,12 +233,12 @@ function decodeOutput(outputs, originalSize) {
       const objectnessLogit = data[4 * numDetections + i];
       const objectness = sigmoid(objectnessLogit);
 
-      // Find class with highest confidence
+      // Find class with highest confidence (dynamic based on actual model)
       let maxConfidence = 0;
       let classId = 0;
       
-      // Classes start at channel 5, go through 84 (so 80 classes)
-      for (let c = 0; c < 80; c++) {
+      // Classes start at channel 5, adapt to number of actual classes
+      for (let c = 0; c < numClasses; c++) {
         const channelIdx = 5 + c;
         if (channelIdx >= numChannels) break;
         
@@ -244,26 +259,38 @@ function decodeOutput(outputs, originalSize) {
         console.log(`  Sample ${i}: obj=${objectness.toFixed(3)}, class=${classId}, conf=${combinedConfidence.toFixed(3)}`);
       }
 
-      // Use higher threshold to filter noise
-      if (combinedConfidence >= 0.6) {
-        detectionCount++;
+      // Lower threshold for better detection (model shows ~1.0 confidence)
+      if (combinedConfidence >= CONFIDENCE_THRESHOLD) {
+        // Validate coordinates are reasonable
+        if (width > 0 && height > 0 && xCenter > 0 && yCenter > 0) {
+          detectionCount++;
 
-        // Scale coordinates back to original image size
-        const scaleX = originalSize.width / INPUT_SIZE;
-        const scaleY = originalSize.height / INPUT_SIZE;
+          // Scale coordinates back to original image size
+          const scaleX = originalSize.width / INPUT_SIZE;
+          const scaleY = originalSize.height / INPUT_SIZE;
 
-        detections.push({
-          x: Math.max(0, Math.round((xCenter - width / 2) * scaleX)),
-          y: Math.max(0, Math.round((yCenter - height / 2) * scaleY)),
-          width: Math.round(width * scaleX),
-          height: Math.round(height * scaleY),
-          confidence: (combinedConfidence * 100).toFixed(1),
-          classId,
-        });
+          const x = Math.max(0, Math.round((xCenter - width / 2) * scaleX));
+          const y = Math.max(0, Math.round((yCenter - height / 2) * scaleY));
+          const w = Math.round(width * scaleX);
+          const h = Math.round(height * scaleY);
+
+          detections.push({
+            x,
+            y,
+            width: w,
+            height: h,
+            confidence: (combinedConfidence * 100).toFixed(1),
+            classId,
+          });
+          
+          if (detectionCount <= 3) {
+            console.log(`    ✓ Detection ${detectionCount}: box=(${x},${y},${w}x${h}) conf=${combinedConfidence.toFixed(3)}`);
+          }
+        }
       }
     }
 
-    console.log(`✅ Total detections after filtering (conf >= 0.6): ${detectionCount}`);
+    console.log(`✅ Total detections after filtering (conf >= ${CONFIDENCE_THRESHOLD}): ${detectionCount}`);
   } catch (err) {
     console.error("❌ Error decoding YOLOv8 output:", err.message);
   }
