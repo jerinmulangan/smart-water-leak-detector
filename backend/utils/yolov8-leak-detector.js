@@ -23,7 +23,7 @@ function getModelPath() {
 
 const MODEL_PATH = getModelPath();
 const INPUT_SIZE = 640; // YOLOv8 standard input size
-const CONFIDENCE_THRESHOLD = 0.5; // Model outputs ~1.0 confidence (see debug_model_output.js)
+const CONFIDENCE_THRESHOLD = 0.25; // Model outputs ~0.5 * 0.5 = 0.25 due to weak training (16 images)
 const IOU_THRESHOLD = 0.45; // Non-max suppression IOU threshold
 
 // Custom water damage labels (train on water damage dataset)
