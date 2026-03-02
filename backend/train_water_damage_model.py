@@ -136,7 +136,7 @@ def train_model(dataset_yaml):
         data=str(dataset_yaml),
         epochs=50,  # Reduced for demo (use 100+ in production)
         imgsz=640,
-        device=0,  # GPU if available, otherwise CPU
+        device='cpu',  # Use CPU (CUDA not available)
         patience=10,  # Early stopping
         save=True,
         project="water_damage_model",
